@@ -1,0 +1,1436 @@
+/* ===================================================================
+   Family Gold Zakat Calculator Stylesheet
+   Color Palette:
+     - #E3FDFD (Light Ice / Cyan Background)
+     - #CBF1F5 (Soft Aqua Panels & Surface)
+     - #A6E3E9 (Teal Tint Borders & Accent)
+     - #71C9CE (Primary Brand Turquoise)
+   Complementary:
+     - #0D333A / #164E5A (Deep High-Contrast Readable Slate-Teal)
+     - #D4AF37 / #B38F24 (Refined Gold Accents)
+   =================================================================== */
+
+:root {
+  --color-bg: #E3FDFD;
+  --color-surface-soft: #CBF1F5;
+  --color-border-tint: #A6E3E9;
+  --color-primary: #71C9CE;
+  --color-primary-dark: #4FA8AE;
+  --color-primary-darker: #297B82;
+  --color-text-main: #0D333A;
+  --color-text-muted: #38646C;
+  --color-text-light: #618A92;
+  --color-white: #FFFFFF;
+  --color-card-bg: #FFFFFF;
+  --color-gold: #D4AF37;
+  --color-gold-dark: #A68018;
+  --color-gold-light: #FFF9E6;
+  --color-gold-border: #E8D382;
+  --color-success: #10B981;
+  --color-danger: #EF4444;
+  --color-danger-light: #FEE2E2;
+  
+  --shadow-sm: 0 1px 3px rgba(13, 51, 58, 0.06), 0 1px 2px rgba(13, 51, 58, 0.04);
+  --shadow-md: 0 4px 12px rgba(13, 51, 58, 0.08), 0 2px 4px rgba(13, 51, 58, 0.04);
+  --shadow-lg: 0 10px 25px rgba(13, 51, 58, 0.10), 0 4px 10px rgba(13, 51, 58, 0.05);
+  --shadow-hero: 0 14px 35px rgba(41, 123, 130, 0.16);
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+  
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-arabic: 'Amiri', serif;
+  --font-serif: 'Cinzel', serif;
+  
+  --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(203, 241, 245, 0.7) 0%, transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(166, 227, 233, 0.5) 0%, transparent 40%);
+  background-attachment: fixed;
+  color: var(--color-text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===================================================================
+   Header & Navigation
+   =================================================================== */
+
+.app-header {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border-tint);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.header-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-symbol {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-darker));
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(113, 201, 206, 0.4);
+}
+
+.brand-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-text-main);
+  letter-spacing: -0.02em;
+}
+
+.brand-subtitle {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.quick-config {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.form-control-compact {
+  padding: 0.45rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid var(--color-border-tint);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-text-main);
+  outline: none;
+  transition: var(--transition);
+}
+
+.form-control-compact:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(113, 201, 206, 0.25);
+}
+
+/* ===================================================================
+   Buttons
+   =================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.15rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.btn-sm {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.82rem;
+}
+
+.btn-lg {
+  padding: 0.85rem 1.75rem;
+  font-size: 1.05rem;
+  border-radius: var(--radius-md);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #062F36;
+  font-weight: 700;
+  border-color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(113, 201, 206, 0.35);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 168, 174, 0.4);
+}
+
+.btn-secondary {
+  background: var(--color-surface-soft);
+  color: var(--color-text-main);
+  border-color: var(--color-border-tint);
+}
+
+.btn-secondary:hover {
+  background: var(--color-border-tint);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: var(--color-white);
+  color: var(--color-text-main);
+  border: 1px solid var(--color-border-tint);
+}
+
+.btn-outline:hover {
+  background: var(--color-surface-soft);
+  border-color: var(--color-primary);
+  color: var(--color-primary-darker);
+}
+
+.btn-text {
+  background: transparent;
+  border: none;
+  color: var(--color-primary-darker);
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.btn-text:hover {
+  background: rgba(113, 201, 206, 0.15);
+  text-decoration: underline;
+}
+
+.btn-icon-danger {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #DC2626;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-icon-danger:hover {
+  background: var(--color-danger-light);
+  border-color: #FCA5A5;
+}
+
+/* ===================================================================
+   Main Container & Banners
+   =================================================================== */
+
+.main-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 3rem;
+  flex: 1;
+  width: 100%;
+}
+
+.bismillah-banner {
+  text-align: center;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(203, 241, 245, 0.6));
+  border: 1px solid var(--color-border-tint);
+  border-radius: var(--radius-lg);
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.arabic-calligraphy {
+  font-family: var(--font-arabic);
+  font-size: 2.15rem;
+  color: var(--color-primary-darker);
+  line-height: 1.3;
+  margin-bottom: 0.35rem;
+  font-weight: 700;
+}
+
+.verse-translation {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.info-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border-tint);
+  padding: 0.95rem 1.25rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.75rem;
+  font-size: 0.92rem;
+  color: var(--color-text-main);
+  box-shadow: var(--shadow-sm);
+}
+
+.info-icon {
+  color: var(--color-primary-darker);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-text {
+  flex: 1;
+  line-height: 1.45;
+}
+
+.info-text strong {
+  color: var(--color-primary-darker);
+}
+
+/* ===================================================================
+   Section Cards General
+   =================================================================== */
+
+.section-card {
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-tint);
+  box-shadow: var(--shadow-md);
+  padding: 1.75rem;
+  margin-bottom: 1.85rem;
+  transition: var(--transition);
+}
+
+.section-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+  flex-wrap: wrap;
+}
+
+.step-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-darker));
+  color: var(--color-white);
+  font-weight: 800;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 3px 8px rgba(113, 201, 206, 0.4);
+}
+
+.section-title {
+  font-size: 1.22rem;
+  font-weight: 750;
+  color: var(--color-text-main);
+  line-height: 1.3;
+}
+
+.section-desc {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  margin-top: 0.2rem;
+}
+
+.header-action-group {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* ===================================================================
+   SECTION 1: Karat Rates Grid
+   =================================================================== */
+
+.karat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 1.15rem;
+}
+
+.karat-rate-card {
+  background: var(--color-bg);
+  border: 2px solid var(--color-border-tint);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+  transition: var(--transition);
+}
+
+.karat-rate-card.active {
+  background: var(--color-white);
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 14px rgba(113, 201, 206, 0.28);
+}
+
+.karat-rate-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.karat-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.karat-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--color-surface-soft);
+  color: var(--color-text-main);
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-tint);
+}
+
+.karat-rate-card.active .karat-tag {
+  background: var(--color-gold-light);
+  color: var(--color-gold-dark);
+  border-color: var(--color-gold-border);
+}
+
+.purity-pct {
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+  font-weight: 600;
+}
+
+.karat-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.karat-input-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.input-with-currency {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-currency .curr-symbol {
+  position: absolute;
+  left: 0.75rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.input-rate-tola {
+  width: 100%;
+  padding: 0.55rem 0.65rem 0.55rem 2.2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  background: var(--color-white);
+  border: 1.5px solid var(--color-border-tint);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.input-rate-tola:focus {
+  border-color: var(--color-primary-dark);
+  box-shadow: 0 0 0 3px rgba(113, 201, 206, 0.3);
+}
+
+.karat-resale-preview {
+  font-size: 0.82rem;
+  padding: 0.45rem 0.6rem;
+  background: var(--color-surface-soft);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.resale-val-highlight {
+  font-weight: 750;
+  color: var(--color-primary-darker);
+}
+
+.karat-card-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  padding-top: 0.3rem;
+  border-top: 1px dashed var(--color-border-tint);
+}
+
+.status-active-pill {
+  font-weight: 700;
+  color: var(--color-primary-darker);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.status-inactive-pill {
+  color: var(--color-text-light);
+}
+
+.rates-footer {
+  margin-top: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.active-karats-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.active-k-chip {
+  background: var(--color-primary);
+  color: #063138;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+}
+
+/* ===================================================================
+   SECTION 2: Items Table
+   =================================================================== */
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-tint);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.92rem;
+}
+
+.items-table th {
+  background: var(--color-surface-soft);
+  color: var(--color-text-main);
+  font-weight: 700;
+  padding: 0.95rem 1rem;
+  border-bottom: 2px solid var(--color-border-tint);
+  white-space: nowrap;
+}
+
+.items-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(166, 227, 233, 0.4);
+  vertical-align: middle;
+}
+
+.items-table tbody tr:nth-child(even) {
+  background: rgba(227, 253, 253, 0.35);
+}
+
+.items-table tbody tr:hover {
+  background: rgba(203, 241, 245, 0.45);
+}
+
+.item-index-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-surface-soft);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--color-text-main);
+}
+
+.table-input-text {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
+  border: 1px solid var(--color-border-tint);
+  border-radius: var(--radius-sm);
+  outline: none;
+  background: var(--color-white);
+}
+
+.table-input-text:focus {
+  border-color: var(--color-primary-dark);
+  box-shadow: 0 0 0 3px rgba(113, 201, 206, 0.2);
+}
+
+.table-select-karat {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-text-main);
+  outline: none;
+  cursor: pointer;
+}
+
+.table-select-karat:focus {
+  box-shadow: 0 0 0 3px rgba(113, 201, 206, 0.3);
+}
+
+.table-input-tolas {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: 1px solid var(--color-border-tint);
+  border-radius: var(--radius-sm);
+  outline: none;
+  background: var(--color-white);
+  color: var(--color-text-main);
+}
+
+.table-input-tolas:focus {
+  border-color: var(--color-primary-dark);
+  box-shadow: 0 0 0 3px rgba(113, 201, 206, 0.2);
+}
+
+.table-val-pill {
+  font-weight: 700;
+  color: var(--color-text-main);
+  white-space: nowrap;
+}
+
+.table-val-zakat {
+  font-weight: 800;
+  color: var(--color-primary-darker);
+  white-space: nowrap;
+}
+
+.table-total-row {
+  background: var(--color-surface-soft) !important;
+  font-size: 0.96rem;
+  border-top: 2px solid var(--color-border-tint);
+}
+
+.table-total-row td {
+  padding: 1.1rem 1rem;
+}
+
+.highlight-val {
+  font-size: 1.05rem;
+  color: var(--color-primary-darker);
+  white-space: nowrap;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.empty-state {
+  padding: 2.5rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  margin-top: 1rem;
+  border: 1px dashed var(--color-border-tint);
+}
+
+/* ===================================================================
+   SECTION 3: Category Cards Grid
+   =================================================================== */
+
+.category-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.category-card {
+  background: linear-gradient(145deg, #FFFFFF, var(--color-bg));
+  border: 1.5px solid var(--color-border-tint);
+  border-radius: var(--radius-md);
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.category-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.category-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.category-card-badge {
+  background: var(--color-gold-light);
+  color: var(--color-gold-dark);
+  border: 1px solid var(--color-gold-border);
+  font-size: 1.15rem;
+  font-weight: 800;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-pill);
+}
+
+.category-item-count {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.category-metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(166, 227, 233, 0.4);
+}
+
+.category-metric-row:last-of-type {
+  border-bottom: none;
+}
+
+.category-metric-label {
+  color: var(--color-text-muted);
+}
+
+.category-metric-val {
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.category-zakat-highlight {
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border-tint);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.35rem;
+}
+
+.category-zakat-label {
+  font-weight: 700;
+  color: var(--color-primary-darker);
+  font-size: 0.9rem;
+}
+
+.category-zakat-amount {
+  font-weight: 800;
+  color: var(--color-primary-darker);
+  font-size: 1.15rem;
+}
+
+/* ===================================================================
+   SECTION 4: Grand Total Hero Card
+   =================================================================== */
+
+.grand-summary-card {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F0FBFB 100%);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-xl);
+  padding: 2.25rem 2rem;
+  box-shadow: var(--shadow-hero);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+}
+
+.grand-summary-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-gold), var(--color-primary-darker));
+}
+
+.summary-top-tag {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.nisab-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.15rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.88rem;
+  font-weight: 700;
+  background: var(--color-surface-soft);
+  color: var(--color-primary-darker);
+  border: 1px solid var(--color-border-tint);
+}
+
+.nisab-status-badge.eligible {
+  background: #DCFCE7;
+  color: #166534;
+  border-color: #86EFAC;
+}
+
+.nisab-status-badge.exempt {
+  background: #FEF3C7;
+  color: #92400E;
+  border-color: #FCD34D;
+}
+
+.summary-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.summary-stat-box {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-tint);
+  border-radius: var(--radius-md);
+  padding: 1.35rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.35rem;
+}
+
+.stat-value {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--color-text-main);
+  line-height: 1.2;
+}
+
+.stat-hint {
+  font-size: 0.78rem;
+  color: var(--color-text-light);
+  margin-top: 0.35rem;
+}
+
+.secondary-stat {
+  color: var(--color-text-muted);
+}
+
+.accent-stat {
+  color: var(--color-primary-darker);
+}
+
+.hero-zakat-box {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-darker));
+  color: var(--color-white);
+  border: none;
+  box-shadow: 0 8px 20px rgba(79, 168, 174, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-zakat-box::after {
+  content: "";
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 70%);
+  border-radius: 50%;
+}
+
+.stat-label-hero {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.92);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem;
+}
+
+.stat-value-hero {
+  font-size: 2.15rem;
+  font-weight: 850;
+  color: var(--color-white);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.stat-formula-hero {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 0.35rem;
+  font-family: monospace;
+}
+
+/* Mathematical Verification Steps (matching PDF format) */
+.math-proof-container {
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border-tint);
+  border-radius: var(--radius-md);
+  padding: 1.35rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.math-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-primary-darker);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.math-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.math-step-card {
+  background: var(--color-white);
+  border: 1px solid rgba(166, 227, 233, 0.8);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.1rem;
+}
+
+.step-num {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+}
+
+.step-calc {
+  font-size: 1.05rem;
+  font-weight: 750;
+  color: var(--color-text-main);
+  margin: 0.25rem 0;
+}
+
+.step-note {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.summary-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ===================================================================
+   Modals
+   =================================================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 51, 58, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 1rem;
+}
+
+.modal-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-tint);
+  box-shadow: 0 20px 40px rgba(13, 51, 58, 0.25);
+  max-width: 580px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalEnter 0.25s ease-out;
+}
+
+@keyframes modalEnter {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border-tint);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-surface-soft);
+}
+
+.modal-header h3 {
+  font-size: 1.15rem;
+  color: var(--color-text-main);
+  font-weight: 750;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 0 0.4rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.modal-close:hover {
+  color: var(--color-danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--color-text-main);
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--color-border-tint);
+  display: flex;
+  justify-content: flex-end;
+  background: var(--color-bg);
+}
+
+.formula-explainer h4 {
+  color: var(--color-primary-darker);
+  margin: 1.15rem 0 0.35rem;
+  font-size: 0.98rem;
+}
+
+.formula-explainer h4:first-child {
+  margin-top: 0;
+}
+
+.formula-explainer p {
+  color: var(--color-text-muted);
+  margin-bottom: 0.6rem;
+}
+
+.formula-math-box {
+  background: var(--color-surface-soft);
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  text-align: center;
+  margin: 0.75rem 0;
+  border: 1px solid var(--color-border-tint);
+}
+
+.converter-grid {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.converter-col {
+  flex: 1;
+}
+
+.converter-col label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.converter-col input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1.5px solid var(--color-border-tint);
+  border-radius: var(--radius-sm);
+  font-size: 1.05rem;
+  font-weight: 700;
+  outline: none;
+  font-family: inherit;
+}
+
+.converter-col input:focus {
+  border-color: var(--color-primary-dark);
+  box-shadow: 0 0 0 3px rgba(113, 201, 206, 0.25);
+}
+
+.converter-swap-icon {
+  font-size: 1.5rem;
+  color: var(--color-primary-darker);
+  font-weight: 800;
+  padding-top: 1.25rem;
+}
+
+.conv-result-pill {
+  background: var(--color-surface-soft);
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-primary-darker);
+  border: 1px solid var(--color-border-tint);
+}
+
+/* ===================================================================
+   Footer
+   =================================================================== */
+
+.app-footer {
+  background: rgba(255, 255, 255, 0.75);
+  border-top: 1px solid var(--color-border-tint);
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.footer-subtext {
+  font-size: 0.78rem;
+  color: var(--color-text-light);
+  margin-top: 0.3rem;
+  font-style: italic;
+}
+
+/* ===================================================================
+   PRINT DOCUMENT (Specifically formatted to replicate Zakat_Calculation.pdf)
+   =================================================================== */
+
+.print-document {
+  display: none; /* Only visible in print or special print container */
+}
+
+@media print {
+  /* Hide all web interface parts */
+  .no-print,
+  .app-header,
+  .bismillah-banner,
+  .info-card,
+  .rates-section,
+  .items-section,
+  .category-breakdown-section,
+  .grand-summary-card,
+  .app-footer,
+  .modal-overlay {
+    display: none !important;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-family: 'Times New Roman', Times, serif, sans-serif !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .main-container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Show the clean official print document */
+  .print-document {
+    display: block !important;
+    width: 100% !important;
+    max-width: 760px !important;
+    margin: 0 auto !important;
+    padding: 20mm 15mm !important;
+    box-sizing: border-box !important;
+    background: #FFFFFF !important;
+  }
+
+  .print-bismillah {
+    font-family: 'Amiri', serif !important;
+    font-size: 1.6rem !important;
+    text-align: center !important;
+    margin-bottom: 0.6rem !important;
+    color: #111 !important;
+  }
+
+  .print-title {
+    text-align: center !important;
+    font-size: 1.8rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 0.2rem !important;
+    color: #000 !important;
+  }
+
+  .print-subtitle {
+    text-align: center !important;
+    font-size: 1.1rem !important;
+    font-style: italic !important;
+    font-weight: normal !important;
+    margin-bottom: 1.5rem !important;
+    color: #333 !important;
+  }
+
+  .print-meta-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 0.95rem !important;
+    border-bottom: 1px solid #000 !important;
+    padding-bottom: 0.5rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .print-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-bottom: 1.5rem !important;
+    font-size: 1rem !important;
+  }
+
+  .print-table th,
+  .print-table td {
+    border: 1px solid #000000 !important;
+    padding: 8px 12px !important;
+    text-align: center !important;
+  }
+
+  .print-table th {
+    background-color: #F3F4F6 !important;
+    font-weight: bold !important;
+    color: #000 !important;
+  }
+
+  .print-total-row {
+    font-weight: bold !important;
+    background-color: #FAFAFA !important;
+  }
+
+  .print-calculation-box {
+    border: 1px solid #000 !important;
+    padding: 14px 18px !important;
+    margin-bottom: 1.5rem !important;
+    background: #FFF !important;
+  }
+
+  .print-box-heading {
+    font-size: 1.05rem !important;
+    font-weight: bold !important;
+    margin-bottom: 0.6rem !important;
+    border-bottom: 1px dashed #666 !important;
+    padding-bottom: 0.3rem !important;
+  }
+
+  .print-rates-breakdown-row {
+    font-size: 0.95rem !important;
+    margin-bottom: 0.4rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .print-formula-lines {
+    margin-top: 1rem !important;
+    text-align: center !important;
+    font-size: 1.15rem !important;
+    font-weight: bold !important;
+    line-height: 1.8 !important;
+  }
+
+  .print-formula-line {
+    border-top: 1px solid #000 !important;
+    padding-top: 0.6rem !important;
+    margin-top: 0.6rem !important;
+  }
+
+  .print-final-zakat-box {
+    border: 2px solid #000000 !important;
+    padding: 12px 18px !important;
+    text-align: center !important;
+    margin-bottom: 1.5rem !important;
+    font-size: 1.4rem !important;
+    font-weight: 900 !important;
+    background-color: #F8F9FA !important;
+  }
+
+  .print-zakat-label {
+    margin-right: 0.5rem !important;
+  }
+
+  .print-zakat-amount {
+    font-size: 1.5rem !important;
+    text-decoration: underline !important;
+  }
+
+  .print-notes-section {
+    font-size: 0.82rem !important;
+    line-height: 1.4 !important;
+    color: #444 !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .print-signature-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 3.5rem !important;
+    padding-top: 1rem !important;
+  }
+
+  .sig-block {
+    text-align: center !important;
+    width: 200px !important;
+    font-size: 0.9rem !important;
+    font-weight: bold !important;
+  }
+
+  .sig-line {
+    border-bottom: 1px solid #000000 !important;
+    height: 1px !important;
+    margin-bottom: 0.5rem !important;
+  }
+}
+
+/* ===================================================================
+   Responsive Mobile Adjustments
+   =================================================================== */
+
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-actions {
+    justify-content: space-between;
+  }
+
+  .section-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .step-badge {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+  }
+
+  .arabic-calligraphy {
+    font-size: 1.7rem;
+  }
+
+  .stat-value-hero {
+    font-size: 1.85rem;
+  }
+
+  .grand-summary-card {
+    padding: 1.5rem 1.25rem;
+  }
+}
