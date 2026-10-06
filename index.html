@@ -1,61 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Family Gold Zakat Calculator | Shariah Compliant</title>
-  <meta name="description" content="Dedicated Family Gold Zakat Calculator with 20K, 21K, and 22K Karat breakdown, 25% resale deduction, and 1/40th Zakat rule.">
+  <meta name="description"
+    content="Dedicated Family Gold Zakat Calculator with 20K, 21K, and 22K Karat breakdown, 25% resale deduction, and 1/40th Zakat rule in PKR.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Cinzel:wght@600;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" type="image/svg+xml" href="assets/gold-icon.svg">
 </head>
+
 <body>
 
-  <!-- Top Announcement / Calligraphy Bar -->
-  <div class="top-announcement-bar no-print">
-    <div class="arabic-calligraphy-top">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+  <!-- =============================================================
+       WELCOME ANIMATION OVERLAY (Fades away after 3 seconds)
+       Displays Bismillah and the Quranic Verse for Zakat
+       ============================================================= -->
+  <div class="welcome-splash-overlay no-print" id="welcome-splash" title="Click anywhere to skip">
+    <div class="splash-content">
+      <div class="splash-emblem">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 3a9 9 0 0 0 0 18" />
+          <path d="m9 12 2 2 4-4" />
+        </svg>
+      </div>
+      <div class="splash-bismillah">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <div class="splash-verse">“And establish prayer and give Zakat, and whatever good you put forward for yourselves –
+        you will find it with Allah.”</div>
+      <div class="splash-reference">— Surah Al-Baqarah (2:110)</div>
+      <div class="splash-subtext">Family Gold Zakat Calculator</div>
+      <div class="splash-timer-bar">
+        <div class="splash-timer-progress"></div>
+      </div>
+    </div>
   </div>
 
-  <!-- Header Bar -->
+  <!-- Header Bar (Compact & Balanced so it does not cover the application) -->
   <header class="app-header no-print">
     <div class="header-container">
-      
-      <!-- Big Center-Aligned Branding -->
-      <div class="header-hero-brand">
-        <div class="brand-badge-icon">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9"/>
-            <path d="M12 3a9 9 0 0 0 0 18"/>
-            <path d="m9 12 2 2 4-4"/>
+
+      <div class="header-brand-compact">
+        <div class="brand-badge-icon-sm">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 3a9 9 0 0 0 0 18" />
+            <path d="m9 12 2 2 4-4" />
           </svg>
         </div>
-        <h1 class="brand-title-hero">Family Gold Zakat Calculator</h1>
-        <p class="brand-subtitle-hero">Shariah Compliant • Category-wise Karat Valuation • Resale Formula</p>
+        <div class="brand-titles">
+          <h1 class="brand-title-compact">Family Gold Zakat Calculator</h1>
+          <p class="brand-subtitle-compact">Shariah Compliant • Category-wise Karat Valuation • Resale Formula</p>
+        </div>
       </div>
 
       <!-- Action Toolbar -->
-      <div class="header-toolbar">
-        <div class="toolbar-item date-picker-item">
-          <label for="calc-date">Calculation Date:</label>
+      <div class="header-toolbar-compact">
+        <div class="toolbar-date-picker">
+          <label for="calc-date">Date:</label>
           <input type="date" id="calc-date" class="form-control-compact">
         </div>
 
-        <div class="toolbar-buttons">
+        <div class="toolbar-buttons-compact">
           <button id="btn-load-example" class="btn btn-secondary btn-sm" title="Load sample from 2025 calculation">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Load 2025 Example
-          </button>
-          
-          <button id="btn-print-summary" class="btn btn-primary btn-sm" title="Print concise 1-page slip with items, zakat and signatures">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-            Print Summary Slip (1 Page)
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            <span class="btn-text-desktop">Load 2025 Example</span>
+            <span class="btn-text-mobile">Load Example</span>
           </button>
 
-          <button id="btn-print-full" class="btn btn-dark-teal btn-sm" title="Print complete audit report with all formula steps & karat breakdown">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-            Print Complete Report (Full Audit)
+          <button id="btn-clear-all" class="btn btn-outline btn-sm" title="Clear all inputs and start fresh">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18" />
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+            <span>Reset</span>
+          </button>
+
+          <button id="btn-print-summary" class="btn btn-primary btn-sm"
+            title="Print concise 1-page slip with items, zakat and signatures">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 6 2 18 2 18 9" />
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+              <rect x="6" y="14" width="12" height="8" />
+            </svg>
+            <span class="btn-text-desktop">Print Summary Slip (1 Page)</span>
+            <span class="btn-text-mobile">Summary Slip</span>
+          </button>
+
+          <button id="btn-print-full" class="btn btn-dark-teal btn-sm"
+            title="Print complete audit report with all formula steps & karat breakdown">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" />
+            </svg>
+            <span class="btn-text-desktop">Print Complete Report (Full Audit)</span>
+            <span class="btn-text-mobile">Full Audit Slip</span>
           </button>
         </div>
       </div>
@@ -68,15 +122,59 @@
     <!-- Formula Information Banner -->
     <div class="info-card no-print">
       <div class="info-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="16" x2="12" y2="12" />
+          <line x1="12" y1="8" x2="12.01" y2="8" />
+        </svg>
       </div>
       <div class="info-text">
-        <strong>Family Calculation Rule:</strong> 
-        Market Price/Tola &times; <strong>75%</strong> (resale value after 25% jeweler deduction) &times; Total Tolas = <strong>Net Worth</strong>. 
+        <strong>Family Calculation Rule:</strong>
+        Market Price/Tola &times; <strong>75%</strong> (resale value after 25% jeweler deduction) &times; Total Tolas =
+        <strong>Net Worth</strong>.
         Zakat Payable = Net Worth &divide; <strong>40</strong> (2.5% of cashable wealth in PKR).
       </div>
       <button type="button" id="toggle-formula-guide" class="btn-text">How it works &rsaquo;</button>
     </div>
+
+    <!-- =============================================================
+         FAMILY MEMBER / ACCOUNT SELECTION (BEFORE MODULE 1)
+         Options: Combine All, Main Home, 6, Brother 2, Brother 3, Brother 4, Custom
+         ============================================================= -->
+    <section class="section-card member-section no-print" id="member-container">
+      <div class="member-selector-wrap">
+        <div class="member-selector-left">
+          <div class="member-icon-badge">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          </div>
+          <div>
+            <label for="family-member-select" class="member-label">Calculating Zakat For:</label>
+            <p class="member-hint">Select family member or household (this name will appear on the generated print
+              slips)</p>
+          </div>
+        </div>
+
+        <div class="member-selector-inputs">
+          <select id="family-member-select" class="form-control-member">
+            <option value="Combine All">Combine All (Entire Family)</option>
+            <option value="Main Home">Main Home</option>
+            <option value="Muhammad Atta-ul-Islam Abrar">Muhammad Atta-ul-Islam Abrar</option>
+            <option value="Muhammad Zia-ul-Islam Arsalan">Muhammad Zia-ul-Islam Arsalan</option>
+            <option value="Muhammad Islam Kamran">Muhammad Islam Kamran</option>
+            <option value="Muhammad Faiz-ul-Islam Hamza">Muhammad Faiz-ul-Islam Hamza</option>
+            <option value="Custom">Custom / Other Name</option>
+          </select>
+          <input type="text" id="custom-member-name" class="form-control-member-custom"
+            placeholder="Type name (e.g. Ahmad)" style="display: none;">
+        </div>
+      </div>
+    </section>
 
     <!-- MODULE 1: Karat Rates Configuration (Only 20K, 21K, 22K) -->
     <section class="section-card rates-section" id="rates-container">
@@ -84,14 +182,15 @@
         <div class="step-badge">1</div>
         <div class="section-title-wrap">
           <h2 class="section-title">Enter Gold Rates per Tola (PKR)</h2>
-          <p class="section-desc">Enter the current per-tola market price for <strong>20K, 21K, or 22K</strong> gold. Only categories with an entered price will appear in the gold items dropdown.</p>
+          <p class="section-desc">Enter the current per-tola market price for <strong>20K, 21K, or 22K</strong> gold.
+            Only categories with an entered price will appear in the gold items dropdown.</p>
         </div>
       </div>
 
       <div class="karat-grid" id="karat-rates-grid">
-        <!-- Dynamically injected: 22K, 21K, 20K -->
+        <!-- Dynamically injected: 22K, 21K, 20K (Starts blank by default) -->
       </div>
-      
+
       <div class="rates-footer">
         <div class="active-karats-pill" id="active-karats-summary">
           <!-- Active Karats Summary Chips -->
@@ -105,15 +204,23 @@
         <div class="step-badge">2</div>
         <div class="section-title-wrap">
           <h2 class="section-title">Your Gold Holdings & Quantity</h2>
-          <p class="section-desc">Add each gold item or piece in Tolas. Select the Karat from the dropdown (only active karats configured above are available).</p>
+          <p class="section-desc">Add each gold item or piece in Tolas. Select the Karat from the dropdown (only active
+            karats configured above are available).</p>
         </div>
         <div class="header-action-group">
           <button type="button" id="btn-tola-converter" class="btn btn-outline btn-sm">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 4-4-4-4"/><path d="M20 12H8"/><path d="m8 8-4 4 4 4"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m16 16 4-4-4-4" />
+              <path d="M20 12H8" />
+              <path d="m8 8-4 4 4 4" />
+            </svg>
             Grams &harr; Tolas Helper
           </button>
           <button type="button" id="btn-add-item" class="btn btn-primary btn-sm">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
             + Add Gold Item
           </button>
         </div>
@@ -139,7 +246,7 @@
             </tr>
           </thead>
           <tbody id="items-table-body">
-            <!-- Dynamic item rows will be injected here -->
+            <!-- Dynamic item rows will be injected here (Starts empty by default) -->
           </tbody>
           <tfoot>
             <tr class="table-total-row">
@@ -153,17 +260,22 @@
           </tfoot>
         </table>
       </div>
-      
-      <div id="empty-items-alert" class="empty-state" style="display: none;">
-        <p>No gold items added yet. Click <strong>+ Add Gold Item</strong> or <strong>Load 2025 Example</strong> to start calculating.</p>
+
+      <div id="empty-items-alert" class="empty-state">
+        <p>No gold items added yet. Enter your gold rate in <strong>Step 1</strong>, then click <strong>+ Add Gold
+            Item</strong> to begin entering pieces, or click <strong>Load 2025 Example</strong> to view last year's
+          sample calculation.</p>
       </div>
     </section>
 
-    <!-- DEDICATED NISAB STATUS MODULE (Placed directly after Module 2 as requested) -->
+    <!-- DEDICATED NISAB STATUS MODULE (Placed directly after Module 2) -->
     <section class="section-card nisab-banner-section" id="nisab-container">
       <div class="nisab-banner-card" id="nisab-banner-card">
         <div class="nisab-icon-box" id="nisab-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
         </div>
         <div class="nisab-banner-content">
           <div class="nisab-title-row">
@@ -174,28 +286,16 @@
             Total gold holdings meet the threshold for obligatory Zakat.
           </div>
           <div class="nisab-sub-details" id="nisab-sub-details">
-            Cumulative Gold: <strong>16.744 Tolas</strong> (≈ 195.31 Grams) &bull; Excess above Nisab: <strong>+9.244 Tolas</strong>
+            Cumulative Gold: <strong>0.000 Tolas</strong> (≈ 0.00 Grams) &bull; Gold Nisab is 7.5 Tolas.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- MODULE 3: Separate Category Breakdown (Per Karat: 20K, 21K, 22K) -->
-    <section class="section-card category-breakdown-section" id="category-summary-container">
-      <div class="section-header">
-        <div class="step-badge">3</div>
-        <div class="section-title-wrap">
-          <h2 class="section-title">Separate Category Breakdown (Per Karat)</h2>
-          <p class="section-desc">Independent subtotal and Zakat payable for each Karat category (20K, 21K, 22K).</p>
-        </div>
-      </div>
-
-      <div class="category-cards-grid" id="category-cards-grid">
-        <!-- Injected category cards -->
-      </div>
-    </section>
-
-    <!-- MODULE 4: Grand Total Hero Card -->
+    <!-- =============================================================
+         GRAND TOTAL & ZAKAT DUE HERO CARD
+         (REPOSITIONED: Placed directly below "Eligible for Zakat" & above Module 3)
+         ============================================================= -->
     <section class="grand-summary-card" id="grand-summary-container">
       <div class="summary-content">
         <div class="summary-stat-box">
@@ -225,27 +325,57 @@
 
       <div class="summary-actions no-print">
         <button id="btn-print-summary-bottom" class="btn btn-primary btn-lg">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9" />
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+            <rect x="6" y="14" width="12" height="8" />
+          </svg>
           Print Summary Slip (1 Page)
         </button>
         <button id="btn-print-full-bottom" class="btn btn-dark-teal btn-lg">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
           Print Complete Report (Full Audit)
         </button>
         <button id="btn-save-local" class="btn btn-outline btn-lg">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+            <polyline points="17 21 17 13 7 13 7 21" />
+            <polyline points="7 3 7 8 15 8" />
+          </svg>
           Save Data
         </button>
       </div>
     </section>
 
-    <!-- MODULE 5: Official Calculation Formula (As in Family Record) - PLACED AT THE VERY END -->
+    <!-- MODULE 3: Separate Category Breakdown (Per Karat: 20K, 21K, 22K) -->
+    <section class="section-card category-breakdown-section" id="category-summary-container">
+      <div class="section-header">
+        <div class="step-badge">3</div>
+        <div class="section-title-wrap">
+          <h2 class="section-title">Separate Category Breakdown (Per Karat)</h2>
+          <p class="section-desc">Independent subtotal and Zakat payable for each Karat category (20K, 21K, 22K).</p>
+        </div>
+      </div>
+
+      <div class="category-cards-grid" id="category-cards-grid">
+        <!-- Injected category cards -->
+      </div>
+    </section>
+
+    <!-- MODULE 4: Official Calculation Formula (As in Family Record) - At the very end -->
     <section class="section-card math-proof-end-section" id="math-proof-section">
       <div class="section-header">
         <div class="step-badge">4</div>
         <div class="section-title-wrap">
           <h2 class="section-title">Official Calculation Formula (As in Family Record)</h2>
-          <p class="section-desc">Mathematical steps matching the traditional family record transcript from last year.</p>
+          <p class="section-desc">Mathematical steps matching the traditional family record transcript from last year.
+          </p>
         </div>
       </div>
 
@@ -266,19 +396,25 @@
         <div class="modal-body">
           <div class="formula-explainer">
             <h4>1. Karats (20K, 21K, 22K)</h4>
-            <p>22K contains 91.6% gold, 21K contains 87.5%, and 20K contains 83.3% pure gold. Jewelers in Pakistan set separate per-tola buying rates for each karat purity.</p>
-            
+            <p>22K contains 91.6% gold, 21K contains 87.5%, and 20K contains 83.3% pure gold. Jewelers in Pakistan set
+              separate per-tola buying rates for each karat purity.</p>
+
             <h4>2. Resale Deduction (25% Deduction &rarr; 75% Resale Value)</h4>
-            <p>When selling gold jewelry back to jewelers, market practice deducts making charges, impurity allowances, and melting margins (standard 25% deduction). Therefore, the actual liquid, cashable value on your Zakat calculation date is <strong>75% of the gross market rate</strong>.</p>
+            <p>When selling gold jewelry back to jewelers, market practice deducts making charges, impurity allowances,
+              and melting margins (standard 25% deduction). Therefore, the actual liquid, cashable value on your Zakat
+              calculation date is <strong>75% of the gross market rate</strong>.</p>
 
             <h4>3. The 40th Part (2.5%) Rule</h4>
-            <p>According to authentic Sunnah of Prophet Muhammad (ﷺ), the Zakat on gold and cash is <strong>one fortieth (1/40)</strong>, which equals exactly 2.5%:</p>
+            <p>According to authentic Sunnah of Prophet Muhammad (ﷺ), the Zakat on gold and cash is <strong>one fortieth
+                (1/40)</strong>, which equals exactly 2.5%:</p>
             <div class="formula-math-box">
               <code>Zakat Amount = Net Resale Worth &divide; 40</code>
             </div>
 
             <h4>4. Nisab Threshold</h4>
-            <p>The Nisab for gold is <strong>7.5 Tolas</strong> (approx. 87.48 grams). If cumulative family gold ownership meets or exceeds this quantity after holding for one lunar year (Hawl), Zakat is obligatory (Fard).</p>
+            <p>The Nisab for gold is <strong>7.5 Tolas</strong> (approx. 87.48 grams). If cumulative family gold
+              ownership meets or exceeds this quantity after holding for one lunar year (Hawl), Zakat is obligatory
+              (Fard).</p>
           </div>
         </div>
         <div class="modal-footer">
@@ -295,7 +431,8 @@
           <button class="modal-close" id="btn-close-converter">&times;</button>
         </div>
         <div class="modal-body">
-          <p class="text-muted" style="margin-bottom: 1rem;">Standard Subcontinent conversion: <strong>1 Tola = 11.664 Grams</strong> (or 11.6638g).</p>
+          <p class="text-muted" style="margin-bottom: 1rem;">Standard Subcontinent conversion: <strong>1 Tola = 11.664
+              Grams</strong> (or 11.6638g).</p>
           <div class="converter-grid">
             <div class="converter-col">
               <label for="conv-grams">Weight in Grams:</label>
@@ -317,18 +454,56 @@
       </div>
     </div>
 
+    <!-- Custom Reset Confirmation Modal -->
+    <div id="reset-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-card modal-card-sm">
+        <div class="modal-header modal-header-warning">
+          <div class="modal-title-with-icon">
+            <div class="modal-warning-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+            </div>
+            <h3>Reset Calculator?</h3>
+          </div>
+          <button class="modal-close" id="btn-close-reset-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 1rem; font-weight: 600; color: var(--color-text-main); margin-bottom: 0.5rem;">
+            Clear all entered gold rates and holdings?
+          </p>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+            This will reset the calculator back to a fresh slate. You can re-enter your figures or click <strong>Load
+              2025 Example</strong> at any time.
+          </p>
+        </div>
+        <div class="modal-footer" style="gap: 0.75rem;">
+          <button type="button" class="btn btn-outline" id="btn-cancel-reset">Cancel</button>
+          <button type="button" class="btn btn-danger-solid" id="btn-confirm-reset">Yes, Reset All</button>
+        </div>
+      </div>
+    </div>
+
     <!-- =============================================================
          PRINT VIEW 1: QUICK SUMMARY SLIP (Strict 1-Page A4)
-         Contains: Bismillah, Items list, Total Tolas, Total Payable Zakat, Signatures
+         Contains: Bismillah & Quranic Verse on top, Member Name, Items, Total Tolas, Total Payable Zakat, Signatures
          ============================================================= -->
     <div class="print-document print-mode-summary" id="print-summary-doc">
       <div class="print-bismillah">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <div class="print-quran-verse">“And establish prayer and give Zakat, and whatever good you put forward for
+        yourselves – you will find it with Allah.” (Al-Baqarah 2:110)</div>
+
       <h1 class="print-title">ZAKAT CALCULATION</h1>
       <h2 class="print-subtitle">Gold / Tola Calculation</h2>
-      
+
       <div class="print-meta-row">
-        <span><strong>Date of Zakat Calculation:</strong> <span id="print-summary-date">21 October 2025</span></span>
-        <span><strong>Currency:</strong> Pakistani Rupees (PKR)</span>
+        <span><strong>Zakat Calculated For:</strong> <strong id="print-summary-member"
+            style="font-size: 1.05rem; text-decoration: underline;">Combine All</strong></span>
+        <span><strong>Date of Calculation:</strong> <span id="print-summary-date">21 October 2025</span></span>
+        <span><strong>Currency:</strong> PKR</span>
       </div>
 
       <!-- Compact Items Table -->
@@ -347,7 +522,7 @@
         <tfoot>
           <tr class="print-total-row">
             <td colspan="3" style="text-align: right;"><strong>Total Tolas:</strong></td>
-            <td><strong id="print-summary-total-tolas">16.744 Tolas</strong></td>
+            <td><strong id="print-summary-total-tolas">0.000 Tolas</strong></td>
           </tr>
         </tfoot>
       </table>
@@ -355,24 +530,25 @@
       <!-- Simplified Calculation Summary -->
       <div class="print-compact-summary-box">
         <div class="print-calc-line" id="print-summary-calc-rate-line">
-          Total Holdings = 16.744 Tolas &times; 75% Resale Valuation
+          Total Holdings = 0.000 Tolas &times; 75% Resale Valuation
         </div>
         <div class="print-calc-line">
-          Net Valuation (75%) = <strong id="print-summary-net-val">Rs. 5,384,040/-</strong>
+          Net Valuation (75%) = <strong id="print-summary-net-val">Rs. 0/-</strong>
         </div>
       </div>
 
       <!-- Final Zakat Amount Box -->
       <div class="print-final-zakat-box">
         <span class="print-zakat-label">Zakat Amount Payable:</span>
-        <span class="print-zakat-amount" id="print-summary-final-zakat">Rs. 134,610/-</span>
+        <span class="print-zakat-amount" id="print-summary-final-zakat">Rs. 0/-</span>
       </div>
 
       <div class="print-notes-section">
-        <p><strong>Formula Note:</strong> Calculated at 75% market resale value (&minus;25% jeweler deduction), divided by 40 (2.5% Zakat rate).</p>
+        <p><strong>Formula Note:</strong> Calculated at 75% market resale value (&minus;25% jeweler deduction), divided
+          by 40 (2.5% Zakat rate).</p>
       </div>
 
-      <!-- Signatures Block - Guaranteed to fit on page 1 -->
+      <!-- Signatures Block - Strictly on Page 1 -->
       <div class="print-signature-row">
         <div class="sig-block">
           <div class="sig-line"></div>
@@ -380,23 +556,28 @@
         </div>
         <div class="sig-block">
           <div class="sig-line"></div>
-          <div>Family Head / Father's Signature</div>
+          <div><span id="print-summary-sig-label">Family Head</span>'s Signature</div>
         </div>
       </div>
     </div>
 
     <!-- =============================================================
          PRINT VIEW 2: COMPLETE AUDIT REPORT (Full Multi-Section)
-         Contains: Bismillah, Items, Per-Karat Rates, Step-by-Step Math, Signatures
+         Contains: Bismillah & Quranic Verse on top, Member Name, Items, Per-Karat Rates, Step-by-Step Math, Signatures
          ============================================================= -->
     <div class="print-document print-mode-full" id="print-full-doc">
       <div class="print-bismillah">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <div class="print-quran-verse">“And establish prayer and give Zakat, and whatever good you put forward for
+        yourselves – you will find it with Allah.” (Al-Baqarah 2:110)</div>
+
       <h1 class="print-title">ZAKAT CALCULATION REPORT</h1>
       <h2 class="print-subtitle">Complete Family Gold Holdings &amp; Karat Audit</h2>
-      
+
       <div class="print-meta-row">
+        <span><strong>Zakat Calculated For:</strong> <strong id="print-full-member"
+            style="font-size: 1.05rem; text-decoration: underline;">Combine All</strong></span>
         <span><strong>Date of Calculation:</strong> <span id="print-full-date">21 October 2025</span></span>
-        <span><strong>Shariah Rule:</strong> 75% Resale &divide; 40 (2.5%) &bull; Nisab: 7.5 Tolas</span>
+        <span><strong>Rule:</strong> 75% Resale &divide; 40 (2.5%)</span>
       </div>
 
       <!-- Full Table with Prices -->
@@ -416,8 +597,8 @@
         <tfoot>
           <tr class="print-total-row">
             <td colspan="3" style="text-align: right;"><strong>Total Gold Holdings:</strong></td>
-            <td><strong id="print-full-total-tolas">16.744 Tolas</strong></td>
-            <td><strong id="print-full-total-net-val">Rs. 5,384,040/-</strong></td>
+            <td><strong id="print-full-total-tolas">0.000 Tolas</strong></td>
+            <td><strong id="print-full-total-net-val">Rs. 0/-</strong></td>
           </tr>
         </tfoot>
       </table>
@@ -437,11 +618,13 @@
       <!-- Final Zakat Amount Box -->
       <div class="print-final-zakat-box">
         <span class="print-zakat-label">Total Zakat Amount Due:</span>
-        <span class="print-zakat-amount" id="print-full-final-zakat">Rs. 134,610/-</span>
+        <span class="print-zakat-amount" id="print-full-final-zakat">Rs. 0/-</span>
       </div>
 
       <div class="print-notes-section">
-        <p><strong>Audit Note:</strong> Full transcript matching family records. Market Gold Rate per tola reduced by 25% jeweler resale deduction (75% net realization value), multiplied by total tolas, divided by 40 (2.5% Zakat rate).</p>
+        <p><strong>Audit Note:</strong> Full transcript matching family records. Market Gold Rate per tola reduced by
+          25% jeweler resale deduction (75% net realization value), multiplied by total tolas, divided by 40 (2.5% Zakat
+          rate).</p>
       </div>
 
       <div class="print-signature-row">
@@ -451,7 +634,7 @@
         </div>
         <div class="sig-block">
           <div class="sig-line"></div>
-          <div>Family Head / Father's Signature</div>
+          <div><span id="print-full-sig-label">Family Head</span>'s Signature</div>
         </div>
       </div>
     </div>
@@ -460,11 +643,12 @@
 
   <footer class="app-footer no-print">
     <div class="footer-container">
-      <p>Family Gold Zakat Calculator &bull; Designed for precision &amp; clarity.</p>
+      <p>Family Gold Zakat Calculator &bull; Designed with reverence &amp; precision for family records.</p>
       <p class="footer-subtext">May Allah accept your Zakat, purify your wealth, and grant barakah in your home.</p>
     </div>
   </footer>
 
   <script src="js/app.js"></script>
 </body>
+
 </html>

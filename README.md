@@ -36,18 +36,26 @@ Created strictly with the requested palette:
 
 ## ✨ Features Built for Your Family
 
-- **Simplified Karats (20K, 21K, 22K)**: Tailored to your family's gold collection (no unnecessary 18K or 24K clutter).
-- **Default Currency (PKR)**: All calculations and summaries are natively formatted in Pakistani Rupees (`Rs.`).
-- **Dynamic Karat Dropdowns**: Dropdowns in the holdings list only show active karats with entered prices.
-- **Dedicated Nisab Module After Module 2**: Checks immediately whether your cumulative gold exceeds 7.5 Tolas.
+- **Family Member Selection (Before Module 1)**:
+  - Choose whose Zakat is being calculated: **Combine All (Entire Family)**, **Main Home**, **Muhammad Atta-ul-Islam Abrar**, **Muhammad Zia-ul-Islam Arsalan**, **Muhammad Islam Kamran**, **Muhammad Faiz-ul-Islam Hamza**, or **Custom Name**.
+  - The chosen member's actual full name appears on all generated print slips and verification signatures.
+- **Clean Slate & Custom Reset Popup**:
+  - Gold rates start blank, waiting for you to type the current market prices.
+  - Holdings table starts completely empty.
+  - Clicking **"Reset"** triggers an elegant, themed confirmation modal asking whether you want to clear rates and holdings back to a fresh slate.
+  - You can click **"Load 2025 Example"** anytime to view last year's sample with one tap.
+- **Welcome Animation**:
+  - An animated Islamic welcome overlay featuring the Bismillah and Quranic verse on Zakat displays for 3 seconds on page load, then smoothly fades away.
+- **Dedicated Nisab Module & Hero Summary**:
+  - Automatically assesses eligibility against the 7.5 Tolas threshold.
+  - Highlights Total Gold Holdings, Net 75% Resale Worth, and Final Zakat Due ($\div 40$).
 - **Separate Category Breakdown**: Independent summary cards showing subtotals for 22K, 21K, and 20K.
 - **Dual Print Options**:
-  1. **Print Summary Slip (1 Page)**: Compact A4 slip with items list, total tolas, net zakat due, and signature lines guaranteed to fit on a single page!
-  2. **Print Complete Report (Full Audit)**: Multi-section detailed audit with per-karat rates, 75% resale breakdown, step-by-step math proof, and signatures.
+  1. **Print Summary Slip (1 Page)**: Compact A4 slip with member name, items list, total tolas, net zakat due, and signature lines strictly on a single page!
+  2. **Print Complete Report (Full Audit)**: Multi-section detailed audit with member name, per-karat rates, 75% resale breakdown, step-by-step math proof, and signatures.
 - **Formula Proof at the End**: Official calculation card at the very bottom matching your traditional family records.
 - **100% Mobile Compliant**: Touch targets $\ge 44\text{px}$, responsive cards and inputs that look sharp on any smartphone.
 - **Grams ↔ Tolas Converter**: Built-in popup helper ($1\text{ tola} = 11.664\text{ grams}$).
-- **Load 2025 Example**: Instantly pre-fills the exact numbers from `Zakat_Calculation.pdf`.
 
 ---
 
@@ -56,7 +64,7 @@ Created strictly with the requested palette:
 1. Push this repository to GitHub:
    ```bash
    git add .
-   git commit -m "Update Family Gold Zakat Calculator with custom tweaks"
+   git commit -m "Update Family Gold Zakat Calculator with family member selector"
    git push origin main
    ```
 2. In your GitHub repository:

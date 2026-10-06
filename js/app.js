@@ -4,47 +4,53 @@
  * Implements 25% resale deduction (75% net realization) and 1/40th Zakat distribution.
  */
 
-// Focused Karat presets (22K, 21K, 20K only)
+// Focused Karat presets (Starts blank by default - user enters current rates)
 const DEFAULT_KARATS = [
-  { id: '22k', name: '22K', purity: 0.916, desc: 'Jewelry Standard (91.6%)', defaultRate: 428725, active: true },
+  { id: '22k', name: '22K', purity: 0.916, desc: 'Jewelry Standard (91.6%)', defaultRate: 0, active: false },
   { id: '21k', name: '21K', purity: 0.875, desc: 'Gulf / Arab Standard (87.5%)', defaultRate: 0, active: false },
   { id: '20k', name: '20K', purity: 0.833, desc: 'Traditional Craft (83.3%)', defaultRate: 0, active: false }
 ];
 
-// Application State (Currency is fixed to PKR)
+// Application State (Starts empty by default)
 const state = {
   currency: 'Rs. ',
   calculationDate: new Date().toISOString().split('T')[0],
+  selectedMember: 'Combine All',
+  customMemberName: '',
   karats: JSON.parse(JSON.stringify(DEFAULT_KARATS)),
-  items: [
-    { id: 'item_1', name: 'Item 1 (Tolas)', karatId: '22k', tolas: 6.55 },
-    { id: 'item_2', name: 'Item 2 (Tolas)', karatId: '22k', tolas: 0.194 },
-    { id: 'item_3', name: 'Item 3 (Tolas)', karatId: '22k', tolas: 10 }
-  ]
+  items: [] // Empty by default
 };
 
 // Shariah Nisab threshold in Tolas (7.5 Tolas)
 const NISAB_TOLAS = 7.5;
 const TOLA_IN_GRAMS = 11.6638;
 
-// LocalStorage Key
-const STORAGE_KEY = 'family_zakat_calc_pkr_v2';
+// LocalStorage Key (v3 - starts clean without pre-filled defaults)
+const STORAGE_KEY = 'family_zakat_calc_pkr_v3';
 
 let elements = {};
 
 document.addEventListener('DOMContentLoaded', () => {
   initDOMElements();
+  initSplashAnimation();
   loadSavedState();
   initEventListeners();
   renderKaratRatesGrid();
   renderItemsTable();
   recalculateAll();
+  updateMemberUI();
 });
 
 function initDOMElements() {
   elements = {
+    welcomeSplash: document.getElementById('welcome-splash'),
     calcDate: document.getElementById('calc-date'),
+    // Family Member Selector
+    familyMemberSelect: document.getElementById('family-member-select'),
+    customMemberName: document.getElementById('custom-member-name'),
+    // Buttons
     btnLoadExample: document.getElementById('btn-load-example'),
+    btnClearAll: document.getElementById('btn-clear-all'),
     btnPrintSummary: document.getElementById('btn-print-summary'),
     btnPrintSummaryBottom: document.getElementById('btn-print-summary-bottom'),
     btnPrintFull: document.getElementById('btn-print-full'),
@@ -53,6 +59,7 @@ function initDOMElements() {
     btnTolaConverter: document.getElementById('btn-tola-converter'),
     btnAddItem: document.getElementById('btn-add-item'),
     toggleFormulaGuide: document.getElementById('toggle-formula-guide'),
+    // Rates & Items
     karatRatesGrid: document.getElementById('karat-rates-grid'),
     activeKaratsSummary: document.getElementById('active-karats-summary'),
     itemsTableBody: document.getElementById('items-table-body'),
@@ -66,8 +73,6 @@ function initDOMElements() {
     nisabStatusBadge: document.getElementById('nisab-status-badge'),
     nisabMainStatement: document.getElementById('nisab-main-statement'),
     nisabSubDetails: document.getElementById('nisab-sub-details'),
-    // Category Breakdown
-    categoryCardsGrid: document.getElementById('category-cards-grid'),
     // Grand Summary
     summaryTotalTolas: document.getElementById('summary-total-tolas'),
     summaryTotalGrams: document.getElementById('summary-total-grams'),
@@ -75,6 +80,9 @@ function initDOMElements() {
     summaryNetVal: document.getElementById('summary-net-val'),
     summaryFinalZakat: document.getElementById('summary-final-zakat'),
     summaryFormulaText: document.getElementById('summary-formula-text'),
+    // Category Breakdown
+    categoryCardsGrid: document.getElementById('category-cards-grid'),
+    // Math Proof
     mathStepsContainer: document.getElementById('math-steps-container'),
     // Modals
     formulaModal: document.getElementById('formula-modal'),
@@ -86,8 +94,15 @@ function initDOMElements() {
     convGrams: document.getElementById('conv-grams'),
     convTolas: document.getElementById('conv-tolas'),
     convResultPill: document.getElementById('conv-result-pill'),
+    // Reset Modal
+    resetModal: document.getElementById('reset-modal'),
+    btnCloseResetModal: document.getElementById('btn-close-reset-modal'),
+    btnCancelReset: document.getElementById('btn-cancel-reset'),
+    btnConfirmReset: document.getElementById('btn-confirm-reset'),
     // Summary Slip (1 Page)
     printSummaryDoc: document.getElementById('print-summary-doc'),
+    printSummaryMember: document.getElementById('print-summary-member'),
+    printSummarySigLabel: document.getElementById('print-summary-sig-label'),
     printSummaryDate: document.getElementById('print-summary-date'),
     printSummaryItemsTbody: document.getElementById('print-summary-items-tbody'),
     printSummaryTotalTolas: document.getElementById('print-summary-total-tolas'),
@@ -96,6 +111,8 @@ function initDOMElements() {
     printSummaryCalcRateLine: document.getElementById('print-summary-calc-rate-line'),
     // Full Audit Report
     printFullDoc: document.getElementById('print-full-doc'),
+    printFullMember: document.getElementById('print-full-member'),
+    printFullSigLabel: document.getElementById('print-full-sig-label'),
     printFullDate: document.getElementById('print-full-date'),
     printFullItemsTbody: document.getElementById('print-full-items-tbody'),
     printFullTotalTolas: document.getElementById('print-full-total-tolas'),
@@ -110,13 +127,67 @@ function initDOMElements() {
   }
 }
 
+/**
+ * 3-Second Welcome Splash Animation with Bismillah & Quranic Verse
+ */
+function initSplashAnimation() {
+  const splash = elements.welcomeSplash;
+  if (!splash) return;
+
+  const dismissSplash = () => {
+    splash.classList.add('fade-out');
+    setTimeout(() => {
+      splash.style.display = 'none';
+    }, 750);
+  };
+
+  const timer = setTimeout(dismissSplash, 3000);
+
+  splash.addEventListener('click', () => {
+    clearTimeout(timer);
+    dismissSplash();
+  });
+}
+
 function initEventListeners() {
   elements.calcDate.addEventListener('change', (e) => {
     state.calculationDate = e.target.value;
     autoSaveState();
   });
 
+  // Family Member Selection Handlers
+  elements.familyMemberSelect.addEventListener('change', (e) => {
+    state.selectedMember = e.target.value;
+    if (state.selectedMember === 'Custom') {
+      elements.customMemberName.style.display = 'inline-block';
+      elements.customMemberName.focus();
+    } else {
+      elements.customMemberName.style.display = 'none';
+    }
+    updateMemberUI();
+    autoSaveState();
+  });
+
+  elements.customMemberName.addEventListener('input', (e) => {
+    state.customMemberName = e.target.value;
+    updateMemberUI();
+    autoSaveState();
+  });
+
+  // Example & Reset buttons
   elements.btnLoadExample.addEventListener('click', loadExampleData);
+  if (elements.btnClearAll) {
+    elements.btnClearAll.addEventListener('click', openResetModal);
+  }
+  if (elements.btnCloseResetModal) {
+    elements.btnCloseResetModal.addEventListener('click', closeResetModal);
+  }
+  if (elements.btnCancelReset) {
+    elements.btnCancelReset.addEventListener('click', closeResetModal);
+  }
+  if (elements.btnConfirmReset) {
+    elements.btnConfirmReset.addEventListener('click', confirmResetAll);
+  }
   
   // Dual Print Handlers
   elements.btnPrintSummary.addEventListener('click', () => printSlip('summary'));
@@ -153,9 +224,20 @@ function initEventListeners() {
     elements.converterModal.style.display = 'none';
   });
 
+  // Close modals on outside click
   window.addEventListener('click', (e) => {
     if (e.target === elements.formulaModal) elements.formulaModal.style.display = 'none';
     if (e.target === elements.converterModal) elements.converterModal.style.display = 'none';
+    if (e.target === elements.resetModal) elements.resetModal.style.display = 'none';
+  });
+
+  // Close modals on Escape key
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (elements.formulaModal) elements.formulaModal.style.display = 'none';
+      if (elements.converterModal) elements.converterModal.style.display = 'none';
+      if (elements.resetModal) elements.resetModal.style.display = 'none';
+    }
   });
 
   // Tola-Gram Converter
@@ -184,6 +266,42 @@ function initEventListeners() {
   });
 }
 
+function getEffectiveMemberName() {
+  if (state.selectedMember === 'Custom') {
+    return state.customMemberName && state.customMemberName.trim()
+      ? state.customMemberName.trim()
+      : 'Custom Member';
+  }
+
+  const brotherMap = {
+    'Brother 1': 'Muhammad Atta-ul-Islam Abrar',
+    'Brother 2': 'Muhammad Zia-ul-Islam Arsalan',
+    'Brother 3': 'Muhammad Islam Kamran',
+    'Brother 4': 'Muhammad Faiz-ul-Islam Hamza'
+  };
+
+  if (brotherMap[state.selectedMember]) {
+    return brotherMap[state.selectedMember];
+  }
+
+  if (elements.familyMemberSelect) {
+    const selectedOpt = elements.familyMemberSelect.options[elements.familyMemberSelect.selectedIndex];
+    if (selectedOpt && selectedOpt.value !== 'Custom') {
+      return selectedOpt.value || selectedOpt.text;
+    }
+  }
+
+  return state.selectedMember || 'Combine All';
+}
+
+function updateMemberUI() {
+  const memberName = getEffectiveMemberName();
+  if (elements.printSummaryMember) elements.printSummaryMember.textContent = memberName;
+  if (elements.printFullMember) elements.printFullMember.textContent = memberName;
+  if (elements.printSummarySigLabel) elements.printSummarySigLabel.textContent = memberName;
+  if (elements.printFullSigLabel) elements.printFullSigLabel.textContent = memberName;
+}
+
 function formatMoney(amount, showSymbol = true) {
   if (isNaN(amount) || amount === null) amount = 0;
   const rounded = Math.round(amount);
@@ -205,7 +323,7 @@ function getKarat(id) {
 }
 
 /**
- * Render Karat Rates Configuration (22K, 21K, 20K)
+ * Render Karat Rates Configuration (Starts blank by default)
  */
 function renderKaratRatesGrid() {
   const container = elements.karatRatesGrid;
@@ -213,7 +331,8 @@ function renderKaratRatesGrid() {
 
   state.karats.forEach(k => {
     const card = document.createElement('div');
-    card.className = `karat-rate-card ${k.active && k.defaultRate > 0 ? 'active' : ''}`;
+    const isActive = k.active && k.defaultRate > 0;
+    card.className = `karat-rate-card ${isActive ? 'active' : ''}`;
     card.id = `card-k-${k.id}`;
 
     const resaleRate = Math.round((k.defaultRate || 0) * 0.75);
@@ -236,7 +355,7 @@ function renderKaratRatesGrid() {
             id="rate-${k.id}" 
             class="input-rate-tola" 
             placeholder="0" 
-            value="${k.defaultRate || ''}" 
+            value="${k.defaultRate && k.defaultRate > 0 ? k.defaultRate : ''}" 
             min="0" 
             step="100"
           >
@@ -255,8 +374,8 @@ function renderKaratRatesGrid() {
           <input type="checkbox" id="check-${k.id}" ${k.active ? 'checked' : ''}>
           <span>Include ${k.name}</span>
         </label>
-        <span class="${k.active && k.defaultRate > 0 ? 'status-active-pill' : 'status-inactive-pill'}" id="status-pill-${k.id}">
-          ${k.active && k.defaultRate > 0 ? 'Active in items' : 'Inactive'}
+        <span class="${isActive ? 'status-active-pill' : 'status-inactive-pill'}" id="status-pill-${k.id}">
+          ${isActive ? 'Active in items' : 'Inactive'}
         </span>
       </div>
     `;
@@ -326,7 +445,7 @@ function renderActiveKaratsSummary() {
 }
 
 /**
- * Render Items Table
+ * Render Items Table (Starts empty by default)
  */
 function renderItemsTable() {
   const tbody = elements.itemsTableBody;
@@ -476,6 +595,27 @@ function removeItem(id) {
 }
 
 /**
+ * Clear All Data / Reset Function
+ */
+function clearAllData() {
+  if (confirm('Are you sure you want to clear all entered rates and gold items to start fresh?')) {
+    state.karats = JSON.parse(JSON.stringify(DEFAULT_KARATS));
+    state.items = [];
+    state.selectedMember = 'Combine All';
+    state.customMemberName = '';
+    
+    if (elements.familyMemberSelect) elements.familyMemberSelect.value = 'Combine All';
+    if (elements.customMemberName) elements.customMemberName.style.display = 'none';
+
+    renderKaratRatesGrid();
+    renderItemsTable();
+    recalculateAll();
+    updateMemberUI();
+    autoSaveState();
+  }
+}
+
+/**
  * Recalculate All Values & Update UI
  */
 function recalculateAll() {
@@ -545,18 +685,18 @@ function recalculateAll() {
   // Update Dedicated Nisab Module (after Module 2)
   updateNisabModule(grandTotalTolas);
 
+  // Render Grand Summary Hero Card (Directly below Nisab & above Module 3)
+  renderGrandSummary(grandTotalTolas, grandGrossVal, grandNetVal, grandZakatDue);
+
   // Render Category Breakdown (Module 3)
   renderCategoryBreakdown(categoryAggregates);
 
-  // Render Grand Summary (Module 4)
-  renderGrandSummary(grandTotalTolas, grandGrossVal, grandNetVal, grandZakatDue, categoryAggregates);
-
-  // Render Official Math Proof at the end (Module 5)
+  // Render Official Math Proof at the end (Module 4)
   renderMathProof(grandTotalTolas, grandNetVal, grandZakatDue, categoryAggregates);
 }
 
 /**
- * Requirement #2: Update Dedicated Nisab Status Module
+ * Update Dedicated Nisab Status Module
  */
 function updateNisabModule(totalTolas) {
   const card = elements.nisabBannerCard;
@@ -569,7 +709,7 @@ function updateNisabModule(totalTolas) {
 
   if (totalTolas >= NISAB_TOLAS) {
     card.className = 'nisab-banner-card';
-    icon.innerHTML = `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`;
+    icon.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`;
     badge.textContent = 'Eligible for Zakat';
     statement.textContent = `Eligible for Zakat: Total ${formatTolas(totalTolas)} Tolas exceeds ${NISAB_TOLAS} Tolas Nisab`;
     
@@ -577,7 +717,7 @@ function updateNisabModule(totalTolas) {
     sub.innerHTML = `Total Gold: <strong>${formatTolas(totalTolas)} Tolas</strong> (≈ ${totalGrams} Grams) &bull; Excess above Nisab: <strong>+${excess} Tolas</strong> &bull; Zakat is obligatory (Fard).`;
   } else if (totalTolas > 0) {
     card.className = 'nisab-banner-card exempt';
-    icon.innerHTML = `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+    icon.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
     badge.textContent = 'Below Nisab';
     statement.textContent = `Holdings (${formatTolas(totalTolas)} Tolas) are below the 7.5 Tolas Nisab threshold.`;
     
@@ -585,11 +725,25 @@ function updateNisabModule(totalTolas) {
     sub.innerHTML = `Total Gold: <strong>${formatTolas(totalTolas)} Tolas</strong> (≈ ${totalGrams} Grams) &bull; <strong>${needed} Tolas</strong> short of Nisab.`;
   } else {
     card.className = 'nisab-banner-card exempt';
-    icon.innerHTML = `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
-    badge.textContent = 'Awaiting Holdings';
-    statement.textContent = `Please enter gold items in Module 2 to evaluate Nisab eligibility.`;
+    icon.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+    badge.textContent = 'Awaiting Input';
+    statement.textContent = `Please enter gold rates and items to evaluate Nisab eligibility.`;
     sub.textContent = `Gold Nisab threshold is 7.5 Tolas (approx. 87.48 Grams).`;
   }
+}
+
+/**
+ * Render Grand Summary Hero Card
+ */
+function renderGrandSummary(totalTolas, grossVal, netVal, zakatDue) {
+  elements.summaryTotalTolas.textContent = `${formatTolas(totalTolas)} Tolas`;
+  const totalGrams = (totalTolas * TOLA_IN_GRAMS).toFixed(2);
+  elements.summaryTotalGrams.textContent = `≈ ${totalGrams} grams`;
+
+  elements.summaryGrossVal.textContent = formatMoney(grossVal);
+  elements.summaryNetVal.textContent = formatMoney(netVal);
+  elements.summaryFinalZakat.textContent = formatMoney(zakatDue);
+  elements.summaryFormulaText.textContent = `${formatMoney(netVal)} ÷ 40`;
 }
 
 /**
@@ -652,21 +806,7 @@ function renderCategoryBreakdown(aggregates) {
 }
 
 /**
- * Render Grand Summary Hero Card (Module 4)
- */
-function renderGrandSummary(totalTolas, grossVal, netVal, zakatDue) {
-  elements.summaryTotalTolas.textContent = `${formatTolas(totalTolas)} Tolas`;
-  const totalGrams = (totalTolas * TOLA_IN_GRAMS).toFixed(2);
-  elements.summaryTotalGrams.textContent = `≈ ${totalGrams} grams`;
-
-  elements.summaryGrossVal.textContent = formatMoney(grossVal);
-  elements.summaryNetVal.textContent = formatMoney(netVal);
-  elements.summaryFinalZakat.textContent = formatMoney(zakatDue);
-  elements.summaryFormulaText.textContent = `${formatMoney(netVal)} ÷ 40`;
-}
-
-/**
- * Requirement #4: Official Calculation Formula (As in Family Record) at the End (Module 5)
+ * Official Calculation Formula at the End (Module 4)
  */
 function renderMathProof(totalTolas, netVal, zakatDue, aggregates) {
   const container = elements.mathStepsContainer;
@@ -758,8 +898,52 @@ function loadExampleData() {
 }
 
 /**
- * Requirements #6 & #7: Dual Print Options
- * mode: 'summary' (guaranteed 1 page) or 'full' (complete audit)
+ * Custom Reset Modal Handlers
+ */
+function openResetModal() {
+  if (elements.resetModal) {
+    elements.resetModal.style.display = 'flex';
+  }
+}
+
+function closeResetModal() {
+  if (elements.resetModal) {
+    elements.resetModal.style.display = 'none';
+  }
+}
+
+function confirmResetAll() {
+  // Clear all entered gold rates (set to 0 and inactive)
+  state.karats.forEach(k => {
+    k.defaultRate = 0;
+    k.active = false;
+  });
+
+  // Clear all gold items
+  state.items = [];
+
+  // Reset member selector to 'Combine All'
+  state.selectedMember = 'Combine All';
+  state.customMemberName = '';
+  if (elements.familyMemberSelect) {
+    elements.familyMemberSelect.value = 'Combine All';
+  }
+  if (elements.customMemberName) {
+    elements.customMemberName.value = '';
+    elements.customMemberName.style.display = 'none';
+  }
+
+  // Refresh UI & state
+  renderKaratRatesGrid();
+  renderItemsTable();
+  recalculateAll();
+  updateMemberUI();
+  autoSaveState();
+  closeResetModal();
+}
+
+/**
+ * Dual Print Options with Member Name, Bismillah & Quranic Verse
  */
 function printSlip(mode) {
   const formattedDate = new Date(state.calculationDate).toLocaleDateString('en-GB', {
@@ -767,6 +951,8 @@ function printSlip(mode) {
     month: 'long',
     year: 'numeric'
   }) || state.calculationDate;
+
+  const memberName = getEffectiveMemberName();
 
   let totalTolas = 0;
   let totalNetVal = 0;
@@ -796,7 +982,8 @@ function printSlip(mode) {
   const activeCats = Object.values(categoryMap);
 
   if (mode === 'summary') {
-    // Populate Concise 1-Page Summary
+    elements.printSummaryMember.textContent = memberName;
+    if (elements.printSummarySigLabel) elements.printSummarySigLabel.textContent = memberName;
     elements.printSummaryDate.textContent = formattedDate;
     elements.printSummaryTotalTolas.textContent = `${formatTolas(totalTolas)} Tolas`;
     elements.printSummaryNetVal.textContent = `${formatMoney(totalNetVal)}/-`;
@@ -829,7 +1016,8 @@ function printSlip(mode) {
     document.body.classList.add('print-mode-summary-active');
 
   } else {
-    // Populate Complete Audit Report
+    elements.printFullMember.textContent = memberName;
+    if (elements.printFullSigLabel) elements.printFullSigLabel.textContent = memberName;
     elements.printFullDate.textContent = formattedDate;
     elements.printFullTotalTolas.textContent = `${formatTolas(totalTolas)} Tolas`;
     elements.printFullTotalNetVal.textContent = `${formatMoney(totalNetVal)}/-`;
@@ -854,7 +1042,6 @@ function printSlip(mode) {
       tbody.appendChild(tr);
     });
 
-    // Rates breakdown
     const ratesBox = elements.printFullRatesBreakdown;
     ratesBox.innerHTML = '';
     activeCats.forEach(c => {
@@ -869,7 +1056,6 @@ function printSlip(mode) {
       ratesBox.appendChild(row);
     });
 
-    // Formula lines
     const formulaLines = elements.printFullFormulaLines;
     if (activeCats.length === 1) {
       const single = activeCats[0];
@@ -897,7 +1083,6 @@ function printSlip(mode) {
     document.body.classList.add('print-mode-full-active');
   }
 
-  // Trigger print dialog
   setTimeout(() => {
     window.print();
   }, 100);
@@ -925,8 +1110,24 @@ function loadSavedState() {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (parsed.calculationDate) state.calculationDate = parsed.calculationDate;
+      if (parsed.selectedMember) {
+        const brotherMap = {
+          'Brother 1': 'Muhammad Atta-ul-Islam Abrar',
+          'Brother 2': 'Muhammad Zia-ul-Islam Arsalan',
+          'Brother 3': 'Muhammad Islam Kamran',
+          'Brother 4': 'Muhammad Faiz-ul-Islam Hamza'
+        };
+        state.selectedMember = brotherMap[parsed.selectedMember] || parsed.selectedMember;
+        if (elements.familyMemberSelect) elements.familyMemberSelect.value = state.selectedMember;
+      }
+      if (parsed.customMemberName) {
+        state.customMemberName = parsed.customMemberName;
+        if (elements.customMemberName) {
+          elements.customMemberName.value = state.customMemberName;
+          if (state.selectedMember === 'Custom') elements.customMemberName.style.display = 'inline-block';
+        }
+      }
       if (Array.isArray(parsed.karats)) {
-        // Filter to keep only 22k, 21k, 20k
         const allowedIds = ['22k', '21k', '20k'];
         const filtered = parsed.karats.filter(k => allowedIds.includes(k.id));
         if (filtered.length > 0) {
